@@ -7,7 +7,7 @@
 </style></head><body>
 <main>
 <section id="setup" class="panel"><div class="brand"><h1 style="margin:0;font-size:1.3rem;color:var(--gold)">🃏 TRUCO MINEIRO</h1><small>Quatro jogadores • duas duplas</small></div><h2 style="margin:.4em 0">Nova partida</h2><div class="namebox"><label for="playerName">Seu nome (jogador)</label><input id="playerName" type="text" maxlength="30" placeholder="Digite seu nome" autocomplete="name"></div><div class="row"><div><label for="difficulty">Nível dos adversários</label><select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></div><div><label for="starting">Quem começa?</label><select id="starting"><option value="you">Você</option><option value="random">Aleatório</option></select></div></div><p class="muted">Você e seu parceiro virtual contra dois adversários. Cada jogo vai até 12 pontos; a partida é melhor de três jogos.</p><div class="row"><button id="start">Começar partida</button><button class="secondary" id="showRules">Regras</button></div></section>
-<section id="rules" class="panel hide"><h2>Regras configuradas</h2><ul><li>Mão normal: 2 pontos.</li><li>Truco aceito: 4 pontos.</li><li>Pedido de 6 aceito: 8 pontos.</li><li>Pedido de 9 aceito: 12 pontos.</li><li><strong>Mão de 10:</strong> quando uma dupla chega a 10 pontos, a mão vale 4 pontos (2 feijões) e <strong>não se pode trucar</strong>.</li><li><strong>Pedidos alternados:</strong> quando uma dupla pede truco, somente a dupla adversária pode aumentar (6 ou 9).</li><li><strong>Carta encoberta:</strong> a partir da 2ª vaza, qualquer jogador pode jogar uma carta virada para baixo. Ela não tem valor na vaza (perde para qualquer carta aberta).</li><li><strong>Correr com parceiro:</strong> ao correr, o parceiro decide se corre também. Se ele não correr, o jogo continua (a dupla aceita o novo valor).</li><li>Cada mão é decidida em até três vazas; quem vencer duas leva a mão.</li><li>Cada jogo termina ao atingir 12 pontos. A partida é melhor de três jogos: vence quem ganhar dois.</li><li>Manilhas fixas: 4♣ (Zap), 7♥, A♠ e 7♦, nesta ordem.</li></ul><p class="muted">As cartas comuns seguem a força 3, 2, A, K, J, Q, 7, 6, 5, 4. As manilhas são mais fortes que todas.</p><button id="hideRules" class="secondary">Voltar</button></section>
+<section id="rules" class="panel hide"><h2>Regras configuradas</h2><ul><li>Mão normal: 2 pontos.</li><li>Truco aceito: 4 pontos.</li><li>Pedido de 6 aceito: 8 pontos.</li><li>Pedido de 9 aceito: 12 pontos.</li><li><strong>Mão de 10:</strong> ao chegar a 10 pontos, a dupla <em>decide</em>:<ul><li><strong>Jogar mão de 10</strong> (4 pts, sem truco): ganha quem vencer — se a dupla em 10 perder, adversário +4.</li><li><strong>Correr</strong> (não jogar): adversário +2 imediato e nova mão é distribuída. Se a dupla continua em 10, nova oferta (loop até alguém chegar a 12).</li><li><strong>Se ambas as duplas estiverem em 10, é obrigatório jogar</strong> (não é permitido correr).</li></ul></li><li><strong>Pedidos alternados:</strong> só a dupla adversária pode aumentar (6 ou 9). O parceiro (IA) também pode pedir.</li><li><strong>Carta encoberta:</strong> a partir da 2ª vaza, qualquer jogador pode jogar uma carta virada para baixo. Ela não tem valor na vaza.</li><li><strong>Correr com parceiro:</strong> ao correr, o parceiro decide se corre também. Se ele não correr, o jogo continua.</li><li>Cada mão é decidida em até três vazas; quem vencer duas leva a mão.</li><li>Cada jogo termina ao atingir 12 pontos. Vence a queda quem ganhar 2 jogos.</li><li>Manilhas fixas: 4♣ (Zap), 7♥, A♠ e 7♦.</li></ul><p class="muted">Cartas comuns: 3, 2, A, K, J, Q, 7, 6, 5, 4.</p><button id="hideRules" class="secondary">Voltar</button></section>
 <section id="game" class="hide">
 <div id="toggleRow"><button id="toggleInfo" class="secondary">📊 Mostrar placares</button></div>
 <div id="infoPanels" class="hide">
@@ -43,20 +43,116 @@ function valueOf(lv){const v=LEVELS[lv];return v!==undefined?v:2;}
 function teamVerb(w){return w===0?'ganhou':'ganharam';}
 function teamVerb2(w){return w===0?'marcou':'marcaram';}
 
-function start(){clearTimeout(aiTimer);savePlayerName();G={difficulty:$('difficulty').value,score:[0,0],games:[0,0],gameHistory:[null,null,null],game:1,hand:0,dealer:$('starting').value==='you'?3:Math.floor(Math.random()*4),trickNo:0,trickWins:[],plays:[],players:[[],[],[],[]],stake:2,stakeLevel:0,pendingLevel:null,pendingRaiser:null,pendingPlayer:null,lastProposer:null,justAccepted:false,handOver:false,handWinner:null,handsLog:[],matchOver:false,turn:0,leadPlayer:0,logs:[],maoDe10:false,encobertaMode:false,pendingRunDecision:false};$('setup').classList.add('hide');$('rules').classList.add('hide');$('game').classList.remove('hide');deal();}
+function start(){clearTimeout(aiTimer);savePlayerName();G={difficulty:$('difficulty').value,score:[0,0],games:[0,0],gameHistory:[null,null,null],game:1,hand:0,dealer:$('starting').value==='you'?3:Math.floor(Math.random()*4),trickNo:0,trickWins:[],plays:[],players:[[],[],[],[]],stake:2,stakeLevel:0,pendingLevel:null,pendingRaiser:null,pendingPlayer:null,lastProposer:null,justAccepted:false,handOver:false,handWinner:null,handsLog:[],matchOver:false,turn:0,leadPlayer:0,logs:[],maoDe10:false,encobertaMode:false,pendingRunDecision:false,pendingMao10:false,mao10AiAlsoAt10:false};$('setup').classList.add('hide');$('rules').classList.add('hide');$('game').classList.remove('hide');deal();}
 
-function deal(){if(G.matchOver)return;G.hand++;
-if(!G.handsLog||(G.handsLog.length>0&&G.handsLog[0].game!==G.game))G.handsLog=[];
-G.trickNo=0;G.trickWins=[];G.plays=[];G.players=[[],[],[],[]];
-G.maoDe10=(G.score[0]===10||G.score[1]===10);
-G.stake=G.maoDe10?4:2;
-G.stakeLevel=0;
-G.pendingLevel=null;G.pendingRaiser=null;G.pendingPlayer=null;G.lastProposer=null;G.justAccepted=false;
-G.handOver=false;G.handWinner=null;G.encobertaMode=false;G.pendingRunDecision=false;
-const d=makeDeck();for(let i=0;i<3;i++)for(let p=0;p<4;p++)G.players[p].push(d.pop());G.turn=(G.dealer+1)%4;G.leadPlayer=G.turn;
-say(G.maoDe10?'🃏 MÃO DE 10: vale 4 pontos e NÃO se pode trucar.':'Nova mão: valendo 2 pontos.');
-render();if(G.turn!==0)aiPlay();}
+/* ============ DEAL (com oferta de mão de 10) ============ */
+function deal(){
+  if(G.matchOver) return;
+  G.hand++;
+  if(!G.handsLog || (G.handsLog.length>0 && G.handsLog[0].game!==G.game)) G.handsLog=[];
+  G.trickNo=0; G.trickWins=[]; G.plays=[]; G.players=[[],[],[],[]];
+  G.stakeLevel=0;
+  G.pendingLevel=null; G.pendingRaiser=null; G.pendingPlayer=null; G.lastProposer=null; G.justAccepted=false;
+  G.handOver=false; G.handWinner=null; G.encobertaMode=false; G.pendingRunDecision=false;
+  G.pendingMao10=false; G.maoDe10=false; G.mao10AiAlsoAt10=false;
+  const d=makeDeck();
+  for(let i=0;i<3;i++) for(let p=0;p<4;p++) G.players[p].push(d.pop());
+  G.turn=-1; G.leadPlayer=0;
+  handleMao10Offer();
+}
 
+function handleMao10Offer(){
+  const humanAt10 = G.score[0]===10;
+  const aiAt10 = G.score[1]===10;
+  if(!humanAt10 && !aiAt10){
+    startNormalHand();
+    return;
+  }
+  if(humanAt10){
+    G.pendingMao10=true;
+    G.mao10AiAlsoAt10=aiAt10;
+    say(aiAt10?'🃏 Ambos em 10 pts! MÃO DE 10 OBRIGATÓRIA (4 pts, sem truco).':'🃏 Você está em 10 pts! Decida: mão de 10 (4 pts) ou correr (adversário +2).');
+    render();
+    return;
+  }
+  // Só IA em 10
+  const aiYes = aiWantsMao10();
+  if(aiYes){
+    say('Adversários declararam MÃO DE 10!');
+    G.maoDe10=true; G.stake=4;
+    startNormalHand();
+  } else {
+    say('Adversários CORRERAM da mão de 10! Sua dupla +2.');
+    G.score[0]+=2;
+    G.dealer=(G.dealer+1)%4;
+    if(G.score[0]>=12){
+      G.handOver=true;
+      checkGame(0);
+      render();
+      return;
+    }
+    G.handOver=true;
+    render();
+    setTimeout(()=>{ if(G && !G.matchOver && G.handOver) deal(); }, 1100);
+  }
+}
+
+function resolveMao10(humanYes){
+  if(!G || !G.pendingMao10) return;
+  // Ambos em 10: só é permitido jogar (não correr)
+  if(!humanYes && G.mao10AiAlsoAt10) humanYes=true;
+  G.pendingMao10=false;
+  if(humanYes){
+    say('Você declarou MÃO DE 10!');
+    G.maoDe10=true; G.stake=4;
+    startNormalHand();
+    return;
+  }
+  // Humano correu
+  say('Você CORREU da mão de 10! Adversários +2.');
+  G.score[1]+=2;
+  G.dealer=(G.dealer+1)%4;
+  if(G.score[1]>=12){
+    G.handOver=true;
+    checkGame(1);
+    render();
+    return;
+  }
+  G.handOver=true;
+  render();
+  setTimeout(()=>{ if(G && !G.matchOver && G.handOver) deal(); }, 1100);
+}
+
+function startNormalHand(){
+  G.turn=(G.dealer+1)%4;
+  G.leadPlayer=G.turn;
+  if(G.maoDe10){
+    say('🃏 MÃO DE 10: vale 4 pts, sem truco.');
+  } else {
+    G.stake=2;
+    say('Nova mão: valendo 2 pts.');
+  }
+  render();
+  if(G.turn!==0) aiPlay();
+}
+
+function aiWantsMao10(){
+  const hand=G.players[1].concat(G.players[3]);
+  const manilhas=hand.filter(c=>strength(c)>=100).length;
+  const highCommons=hand.filter(c=>strength(c)>=8&&strength(c)<100).length;
+  let base;
+  if(manilhas>=2)base=.9;
+  else if(manilhas===1&&highCommons>=1)base=.7;
+  else if(manilhas===1)base=.5;
+  else if(highCommons>=2)base=.4;
+  else if(highCommons===1)base=.2;
+  else base=.05;
+  if(G.difficulty==='easy')base*=.6;
+  else if(G.difficulty==='hard')base=Math.min(.95,base+.15);
+  return Math.random()<base;
+}
+
+/* ============ RENDER ============ */
 function render(){
 if(G.gameHistory&&G.game<=3&&!G.gameHistory[G.game-1])G.gameHistory[G.game-1]={score:[...G.score],winner:null};
 $('games0').textContent=G.games[0];$('games1').textContent=G.games[1];
@@ -69,14 +165,15 @@ $('gameNo').textContent=`Jogo ${G.game} de 3`;
 $('handNo').textContent=`Mão ${G.hand}`;
 $('stake').textContent=G.maoDe10?'🃏 Mão de 10 · 4 pts':`Valendo ${G.stake} ponto${G.stake===1?'':'s'}`;
 $('trickNo').textContent=Math.min(G.trickNo+1,3);
-if(G.pendingLevel!==null){for(let p=0;p<4;p++)$('seat'+p).classList.remove('active');}
+if(G.pendingLevel!==null||G.pendingMao10){for(let p=0;p<4;p++)$('seat'+p).classList.remove('active');}
 else{for(let p=0;p<4;p++)$('seat'+p).classList.toggle('active',!G.handOver&&G.turn===p);}
 $('played').innerHTML=G.plays.map(x=>`<div style="text-align:center"><small>${PLAYER_NAMES[x.p]}</small>${x.encoberta?cardBackHTML():htmlCard(x.c)}</div>`).join('');
-const canPlay=!G.handOver&&G.pendingLevel===null&&G.turn===0;
+const canPlay=!G.handOver&&G.pendingLevel===null&&G.turn===0&&!G.pendingMao10;
 $('hand').innerHTML=G.players[0].map((c,i)=>`<button ${canPlay?'':'disabled'} aria-label="Jogar ${c.r} ${c.s}" data-card="${i}">${htmlCard(c)}</button>`).join('');
 $('hand').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>play(Number(b.dataset.card))));
 $('hand').classList.toggle('encoberta',G.encobertaMode);
 $('message').textContent=G.matchOver?(G.games[0]>G.games[1]?'🏆 Você e seu parceiro venceram!':'Os adversários venceram a partida.')
+:G.pendingMao10?(G.mao10AiAlsoAt10?'🃏 Ambos em 10! É obrigatório jogar a mão de 10 (4 pts).':'🃏 Você está em 10! Jogar mão de 10 (4 pts) ou correr (adversário +2)?')
 :G.handOver?(G.handWinner!==null?`Mão encerrada — ${TEAM_NAMES[G.handWinner]} ${teamVerb(G.handWinner)} ${G.stake} ponto${G.stake===1?'':'s'}.`:'Mão encerrada.')
 :G.encobertaMode?'🂠 Modo encoberto: clique numa carta para jogá-la virada (não valerá nesta vaza).'
 :G.pendingLevel!==null?(G.pendingRunDecision?'Você pediu para correr. Seu parceiro está decidindo...'
@@ -113,6 +210,20 @@ $('handsHistory').innerHTML='Mãos deste jogo: '+items.join(' <span style="opaci
 
 function renderActions(){
 const b=$('betActions');b.innerHTML='';$('cardActions').innerHTML='';
+if(G.pendingMao10){
+  const yesBtn=document.createElement('button');
+  yesBtn.textContent='🃏 Jogar mão de 10 (4 pts)';
+  yesBtn.onclick=()=>resolveMao10(true);
+  b.appendChild(yesBtn);
+  if(!G.mao10AiAlsoAt10){
+    const noBtn=document.createElement('button');
+    noBtn.textContent='Correr (adversário +2)';
+    noBtn.className='secondary';
+    noBtn.onclick=()=>resolveMao10(false);
+    b.appendChild(noBtn);
+  }
+  $('betPanel').classList.remove('hide');return;
+}
 if(G.handOver||G.matchOver){$('betPanel').classList.add('hide');return;}
 if(G.pendingLevel!==null){
 if(G.pendingRaiser===1&&!G.pendingRunDecision){buildHumanRaiseButtons(b);}
@@ -164,7 +275,7 @@ b.append(reraiseBtn);
 }}
 
 function play(index){
-if(G.turn!==0||G.handOver||G.pendingLevel!==null||!G.players[0][index])return;
+if(G.turn!==0||G.handOver||G.pendingLevel!==null||G.pendingMao10||!G.players[0][index])return;
 G.justAccepted=false;
 const isEnc=G.encobertaMode&&G.trickNo>=1;
 const c=G.players[0].splice(index,1)[0];
@@ -197,6 +308,7 @@ G.turn=G.leadPlayer;render();if(G.turn!==0)aiPlay();}
 
 function finishHand(w){G.score[w]+=G.stake;G.handOver=true;G.handWinner=w;G.handsLog.push({game:G.game,hand:G.hand,winner:w,stake:G.stake});say(`${TEAM_NAMES[w]} ${teamVerb(w)} a mão e ${teamVerb2(w)} ${G.stake} ponto(s).`);checkGame(w);G.dealer=(G.dealer+1)%4;render();}
 
+/* ============ PEDIDOS ============ */
 function humanProposeRaise(){
 if(G.turn!==0||G.handOver||G.pendingLevel!==null||G.maoDe10||G.stakeLevel>=3||G.justAccepted||G.lastProposer===0)return;
 G.encobertaMode=false;
@@ -257,13 +369,8 @@ setTimeout(()=>{
 if(!G||G.handOver||G.pendingLevel===null){if(G)G.pendingRunDecision=false;return;}
 const partnerRuns=aiPartnerRunDecision();
 G.pendingRunDecision=false;
-if(partnerRuns){
-say('Seu parceiro também correu!');
-runFromRaise(responderTeam);
-}else{
-say(`Seu parceiro decidiu continuar! Mão vale ${valueOf(G.pendingLevel)} pontos.`);
-acceptRaise(responderTeam);
-}
+if(partnerRuns){say('Seu parceiro também correu!');runFromRaise(responderTeam);}
+else{say(`Seu parceiro decidiu continuar! Mão vale ${valueOf(G.pendingLevel)} pontos.`);acceptRaise(responderTeam);}
 },900);}
 
 function aiPartnerRunDecision(){
@@ -279,8 +386,8 @@ if(highCommons>=2)return Math.random()<0.35;
 if(highCommons===1)return Math.random()<0.6;
 return Math.random()<0.85;}
 
-function evaluateAiRaise(hand){
-if(G.lastProposer===1)return false;
+function evaluateAiRaise(hand,team){
+if(G.lastProposer===team)return false;
 if(G.maoDe10||G.stakeLevel>=3)return false;
 const manilhas=hand.filter(c=>strength(c)>=100).length;
 const highCommons=hand.filter(c=>strength(c)>=8&&strength(c)<100).length;
@@ -326,16 +433,15 @@ function showHumanRaiseResponse(){render();}
 
 function aiPlay(){
 if(!G||G.handOver||G.turn===0)return;
-if(G.pendingLevel!==null)return;
+if(G.pendingLevel!==null||G.pendingMao10)return;
 const p=G.turn;
 aiTimer=setTimeout(()=>{
-if(!G||G.handOver||G.turn!==p||G.pendingLevel!==null)return;
+if(!G||G.handOver||G.turn!==p||G.pendingLevel!==null||G.pendingMao10)return;
 const hand=G.players[p];
-if(!G.justAccepted&&p%2===1&&!G.maoDe10&&G.stakeLevel<3&&G.lastProposer!==1){
-if(evaluateAiRaise(hand)){proposeRaise(p);return;}
+if(!G.justAccepted&&!G.maoDe10&&G.stakeLevel<3&&G.lastProposer!==p%2){
+if(evaluateAiRaise(hand,p%2)){proposeRaise(p);return;}
 }
 G.justAccepted=false;
-// AI considera jogar encoberta (trick 2+, parceiro já ganhando a vaza)
 if(G.trickNo>=1&&G.difficulty!=='easy'&&G.plays.length>0){
 const partnerPos=(p===1)?3:1;
 const partnerPlay=G.plays.find(x=>x.p===partnerPos&&!x.encoberta);
@@ -348,9 +454,7 @@ const c=hand.splice(weakestIdx,1)[0];
 put(p,c,true);
 if(!G.handOver&&G.turn!==0&&G.plays.length<4&&G.pendingLevel===null)aiPlay();
 return;
-}
-}
-}
+}}}
 let idx;
 if(G.difficulty==='easy')idx=Math.floor(Math.random()*hand.length);
 else if(G.difficulty==='normal')idx=hand.reduce((best,c,i)=>strength(c)<strength(hand[best])?i:best,0);
@@ -361,8 +465,7 @@ const partnerWinning=faceUp.some(x=>x.p%2===p%2&&strength(x.c)===currentMax);
 const ordered=hand.map((c,i)=>({i,v:strength(c)})).sort((a,b)=>a.v-b.v);
 let choice=ordered[0];
 if(!partnerWinning){const winning=ordered.find(x=>x.v>currentMax);if(winning)choice=winning;}
-idx=choice.i;
-}
+idx=choice.i;}
 const c=hand.splice(idx,1)[0];put(p,c,false);
 if(!G.handOver&&G.turn!==0&&G.plays.length<4&&G.pendingLevel===null)aiPlay();
 },520);}
