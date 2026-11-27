@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel:wght@800;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#f4d37b;--cream:#fff8eb;--green:#12613f;--deep:#082e20}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at center,#19764e,#062c1d);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}main{max-width:900px;margin:auto;padding:12px}.panel{background:#062e21c9;border:1px solid #ffffff26;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 7px 22px #00170e55}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}label{display:block;color:#d5e8dc;font-size:.9rem;margin-bottom:5px}select,button,textarea{font:600 .95rem system-ui;border:0;border-radius:10px;padding:11px 13px}select,textarea{width:100%;background:#fff;color:#123d2b}button{background:var(--gold);color:#38280a;cursor:pointer}button.secondary{background:#e8f1eb;color:#123d2b}button.red{background:#ad3038;color:white}button:disabled{opacity:.45;cursor:not-allowed}.score{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.score>div{background:#ffffff12;border-radius:12px;padding:9px}.score strong{display:block;color:var(--gold);font-size:1.6rem}.subscore{font-size:.78rem;color:#cde0d4}
+:root{--gold:#f4d37b;--cream:#fff8eb;--green:#12613f;--deep:#082e20}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at center,#19764e,#062c1d);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}main{max-width:900px;margin:auto;padding:12px}.panel{background:#062e21c9;border:1px solid #ffffff26;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 7px 22px #00170e55}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}label{display:block;color:#d5e8dc;font-size:.9rem;margin-bottom:5px}select,button,textarea{font:600 .95rem system-ui;border:0;border-radius:10px;padding:11px 13px}select,textarea{width:100%;background:#fff;color:#123d2b}button{background:var(--gold);color:#38280a;cursor:pointer}button.secondary{background:#e8f1eb;color:#123d2b}button.red{background:#ad3038;color:white}button.confirm-danger{background:#ff2e3b;color:#fff;outline:2px solid var(--gold)}button:disabled{opacity:.45;cursor:not-allowed}.score{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.score>div{background:#ffffff12;border-radius:12px;padding:9px}.score strong{display:block;color:var(--gold);font-size:1.6rem}.subscore{font-size:.78rem;color:#cde0d4}
 .table{position:relative;overflow:hidden;background:radial-gradient(ellipse,#218455,#0b4b31);border:7px solid #70482b;border-radius:22px;padding:12px;min-height:330px;box-shadow:inset 0 0 25px #001d12}
 .seats{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.team-points{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0 3px}.team-point{background:#052e20ad;border:1px solid #ffffff26;border-radius:9px;padding:7px;text-align:center;display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:#d5e8dc}.team-point strong{font-size:1rem;color:var(--gold)}.beans{font-weight:900;letter-spacing:3px;font-size:1.05rem;color:var(--gold);overflow-wrap:anywhere;min-height:1.2em;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px}.seat{padding:7px;border-radius:9px;background:#052e20ad;font-size:.88rem}.seat.active{outline:2px solid var(--gold);color:var(--gold)}.center{min-height:125px;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.played{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;min-height:90px}
 .card{width:64px;height:92px;background:linear-gradient(180deg,#fffdf8 0%,#f7eedc 100%);color:#17231b;border-radius:9px;border:1px solid #cbbba0;box-shadow:0 4px 10px #00190f99;padding:4px 5px;display:flex;flex-direction:column;justify-content:space-between;font-weight:800;position:relative}
@@ -100,7 +100,7 @@
 <div class="panel"><b>Sua mão</b><div class="hand" id="hand"></div><div class="actions" id="cardActions"></div></div>
 <div class="panel hide" id="betPanel"><div class="actions" id="betActions"></div></div>
 <div class="panel hide" id="logPanel"><div id="log"></div></div>
-<div class="row"><button id="nextHand">Próxima mão</button><button class="red" id="endGame">Encerrar partida</button></div>
+<div class="row" id="footerActions"><button id="nextHand">Próxima mão</button><button class="red" id="endGame">Encerrar partida</button><button class="secondary hide" id="cancelEndGame">Cancelar</button></div>
 </section></main>
 <script>
 (()=>{
@@ -126,6 +126,31 @@ let G=null, aiTimer=null, spectacleTimer=null, audioCtx=null, soundEnabled=true;
 let customVoicesByPlayer={0:{},1:{},2:{},3:{}}, selectedStudioPlayer=0;
 let mediaRecorder=null, recChunks=[], activeRecSlot=null, previewAudio=null;
 let recognition=null, isListening=false, previousSectionId='setup';
+let awaitingEndConfirm=false;
+
+function resetEndGameConfirm(){
+  awaitingEndConfirm=false;
+  const endBtn=$('endGame');
+  const cancelBtn=$('cancelEndGame');
+  if(endBtn){
+    endBtn.textContent='Encerrar partida';
+    endBtn.className='red';
+  }
+  if(cancelBtn){
+    cancelBtn.classList.add('hide');
+  }
+}
+
+function executeEndGame(){
+  resetEndGameConfirm();
+  clearAllTimers();
+  clearTimeout(spectacleTimer);
+  if(recognition && isListening){try{recognition.stop();}catch(e){}}
+  if(previewAudio){try{previewAudio.pause();}catch(e){}}
+  G=null;
+  $('game').classList.add('hide');
+  $('setup').classList.remove('hide');
+}
 
 function getPauseMs(){
   const v=parseFloat($('pauseTime').value);
@@ -510,6 +535,7 @@ function triggerShoutAudio(shoutKey, playerIdx=0){
 
 /* ============ COMANDOS POR VOZ (MICROFONE) ============ */
 function startVoiceCommand(){
+  resetEndGameConfirm();
   if(!G || G.matchOver){
     setStatusMsg('Inicie uma partida para usar comandos de voz.', false);
     return;
@@ -684,6 +710,7 @@ function say(t, announce=true, hype=false, sfx=null){
 }
 
 function start(){
+  resetEndGameConfirm();
   clearAllTimers();
   ensureAudio();
   savePlayerName();
@@ -699,6 +726,7 @@ function start(){
 /* ============ DEAL (com oferta de mão de 10) ============ */
 function deal(){
   if(G.matchOver) return;
+  resetEndGameConfirm();
   clearAllTimers();
   G.hand++;
   if(!G.handsLog || (G.handsLog.length>0 && G.handsLog[0].game!==G.game)) G.handsLog=[];
@@ -939,6 +967,7 @@ b.appendChild(reraiseBtn);
 /* ============ SEQUÊNCIA DE JOGADAS (0 -> 1 -> 2 -> 3) ============ */
 function play(index){
 if(G.turn!==0||G.handOver||G.resolvingTrick||G.pendingLevel!==null||G.pendingMao10||!G.players[0][index])return;
+resetEndGameConfirm();
 ensureAudio();
 G.justAccepted=false;
 const isEnc=G.encobertaMode&&G.trickNo>=1;
@@ -1064,6 +1093,7 @@ function shoutPhraseForLevel(level){
 
 function humanProposeRaise(){
 if(G.turn!==0||G.handOver||G.resolvingTrick||G.pendingLevel!==null||G.maoDe10||G.stakeLevel>=3||G.justAccepted||G.lastProposer===0)return;
+resetEndGameConfirm();
 ensureAudio();
 G.encobertaMode=false;
 proposeRaise(0);}
@@ -1132,6 +1162,7 @@ else{showHumanRaiseResponse();}}
 
 function humanTryRun(responderTeam){
 if(!G||G.handOver||G.pendingLevel===null)return;
+resetEndGameConfirm();
 ensureAudio();
 G.pendingRunDecision=true;
 say('Consultando o parceiro...', true, false, 'alert');
@@ -1275,6 +1306,7 @@ function savePausePref(){try{localStorage.setItem('trucoMineiroPause',$('pauseTi
 function updateAudioButton(){$('toggleAudio').textContent = soundEnabled ? '🔊 Sons: Ligados' : '🔇 Sons: Desligados';}
 
 function openVoiceStudio(fromSec){
+  resetEndGameConfirm();
   previousSectionId=fromSec||'setup';
   ['setup','rules','game'].forEach(id=>$(id).classList.add('hide'));
   renderVoiceStudio();
@@ -1336,13 +1368,21 @@ $('showRules').onclick=()=>{$('rules').classList.remove('hide');$('setup').class
 $('hideRules').onclick=()=>{$('rules').classList.add('hide');$('setup').classList.remove('hide')};
 $('nextHand').onclick=()=>{if(G.handOver&&!G.matchOver)deal();};
 $('endGame').onclick=()=>{
-  clearAllTimers();
-  clearTimeout(spectacleTimer);
-  if(recognition && isListening){try{recognition.stop();}catch(e){}}
-  if(previewAudio){try{previewAudio.pause();}catch(e){}}
-  G=null;
-  $('game').classList.add('hide');
-  $('setup').classList.remove('hide');
+  if(!G || G.matchOver){
+    executeEndGame();
+    return;
+  }
+  if(!awaitingEndConfirm){
+    awaitingEndConfirm=true;
+    $('endGame').textContent='⚠️ Confirmar encerrar';
+    $('endGame').className='red confirm-danger';
+    $('cancelEndGame').classList.remove('hide');
+    return;
+  }
+  executeEndGame();
+};
+$('cancelEndGame').onclick=()=>{
+  resetEndGameConfirm();
 };
 $('toggleInfo').onclick=()=>{
 const isCurrentlyHidden=$('infoPanels').classList.contains('hide');
