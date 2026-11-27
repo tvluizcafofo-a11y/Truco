@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel:wght@800;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#f4d37b;--cream:#fff8eb;--green:#12613f;--deep:#082e20}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at center,#19764e,#062c1d);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}main{max-width:900px;margin:auto;padding:12px}.panel{background:#062e21c9;border:1px solid #ffffff26;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 7px 22px #00170e55}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}label{display:block;color:#d5e8dc;font-size:.9rem;margin-bottom:5px}select,button{font:600 .95rem system-ui;border:0;border-radius:10px;padding:11px 13px}select{width:100%;background:#fff;color:#123d2b}button{background:var(--gold);color:#38280a;cursor:pointer}button.secondary{background:#e8f1eb;color:#123d2b}button.red{background:#ad3038;color:white}button:disabled{opacity:.45;cursor:not-allowed}.score{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.score>div{background:#ffffff12;border-radius:12px;padding:9px}.score strong{display:block;color:var(--gold);font-size:1.6rem}.subscore{font-size:.78rem;color:#cde0d4}
+:root{--gold:#f4d37b;--cream:#fff8eb;--green:#12613f;--deep:#082e20}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at center,#19764e,#062c1d);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}main{max-width:900px;margin:auto;padding:12px}.panel{background:#062e21c9;border:1px solid #ffffff26;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 7px 22px #00170e55}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}label{display:block;color:#d5e8dc;font-size:.9rem;margin-bottom:5px}select,button,textarea{font:600 .95rem system-ui;border:0;border-radius:10px;padding:11px 13px}select,textarea{width:100%;background:#fff;color:#123d2b}button{background:var(--gold);color:#38280a;cursor:pointer}button.secondary{background:#e8f1eb;color:#123d2b}button.red{background:#ad3038;color:white}button:disabled{opacity:.45;cursor:not-allowed}.score{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.score>div{background:#ffffff12;border-radius:12px;padding:9px}.score strong{display:block;color:var(--gold);font-size:1.6rem}.subscore{font-size:.78rem;color:#cde0d4}
 .table{position:relative;overflow:hidden;background:radial-gradient(ellipse,#218455,#0b4b31);border:7px solid #70482b;border-radius:22px;padding:12px;min-height:330px;box-shadow:inset 0 0 25px #001d12}
 .seats{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.team-points{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0 3px}.team-point{background:#052e20ad;border:1px solid #ffffff26;border-radius:9px;padding:7px;text-align:center;display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:#d5e8dc}.team-point strong{font-size:1rem;color:var(--gold)}.beans{font-weight:900;letter-spacing:3px;font-size:1.05rem;color:var(--gold);overflow-wrap:anywhere;min-height:1.2em;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px}.seat{padding:7px;border-radius:9px;background:#052e20ad;font-size:.88rem}.seat.active{outline:2px solid var(--gold);color:var(--gold)}.center{min-height:125px;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.played{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;min-height:90px}
 .card{width:64px;height:92px;background:linear-gradient(180deg,#fffdf8 0%,#f7eedc 100%);color:#17231b;border-radius:9px;border:1px solid #cbbba0;box-shadow:0 4px 10px #00190f99;padding:4px 5px;display:flex;flex-direction:column;justify-content:space-between;font-weight:800;position:relative}
@@ -55,6 +55,8 @@
 .seat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .seat-tabs button{padding:8px 11px;font-size:.82rem}
 .seat-tabs button.active-seat{outline:2px solid var(--gold);background:var(--gold);color:#38280a}
+.backup-box{margin-top:12px;padding-top:12px;border-top:1px solid #ffffff22;display:flex;flex-direction:column;gap:8px}
+.backup-box textarea{min-height:76px;font-size:.78rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 @media(max-width:520px){main{padding:7px}.table{padding:8px;border-width:5px}.card{width:56px;height:82px}.hand .card{width:64px;height:94px}.score strong{font-size:1.35rem}.kernel{width:11px;height:13px}#message{font-size:1.08rem;min-height:40px}.spectacle-layer{top:7%}.spectacle-text{font-size:1.05rem}.spectacle-box{padding:10px 15px}}
 </style></head><body>
 <main>
@@ -69,6 +71,17 @@
   <button id="clearSeatRecordings" class="red" style="padding:8px 12px;font-size:.82rem">🗑️ Limpar jogador</button>
   <button id="clearAllRecordings" class="secondary" style="padding:8px 12px;font-size:.82rem">Apagar todos (4)</button>
   <span id="recStatus" class="muted">Pronto para gravar.</span>
+</div>
+<div class="backup-box">
+  <strong style="color:var(--gold);font-size:.95rem">💾 Backup e recuperação das gravações</strong>
+  <div class="row">
+    <button id="downloadBackupBtn" class="secondary" style="padding:8px 12px;font-size:.82rem">⬇️ Baixar backup (.json)</button>
+    <button id="triggerFileRestoreBtn" class="secondary" style="padding:8px 12px;font-size:.82rem">⬆️ Restaurar arquivo (.json)</button>
+    <button id="exportTextBackupBtn" class="secondary" style="padding:8px 12px;font-size:.82rem">📋 Gerar texto JSON</button>
+    <button id="importTextBackupBtn" style="padding:8px 12px;font-size:.82rem">📥 Recuperar do texto</button>
+  </div>
+  <input id="backupFileInput" type="file" accept=".json,application/json" class="hide">
+  <textarea id="backupJsonArea" placeholder="Cole aqui um backup JSON para recuperar ou clique em 'Gerar texto JSON' para copiar/salvar..."></textarea>
 </div>
 </section>
 
@@ -202,20 +215,31 @@ function cardBackHTML(){
   </div>`;
 }
 
-/* ============ SEQUÊNCIA DE VOZ POR JOGADOR (0..3) ============ */
+/* ============ SEQUÊNCIA DE VOZ POR JOGADOR (0..3) + BACKUP ============ */
+function sanitizeVoiceMap(source){
+  const clean={0:{},1:{},2:{},3:{}};
+  if(!source || typeof source!=='object') return clean;
+  const payload = (source.voices && typeof source.voices==='object') ? source.voices : source;
+  const validSlots = new Set(VOICE_SLOTS.map(s=>s.id));
+  for(let p=0;p<4;p++){
+    const pObj = payload[p] || payload[String(p)];
+    if(pObj && typeof pObj==='object'){
+      for(const [k,v] of Object.entries(pObj)){
+        if(validSlots.has(k) && typeof v==='string' && v.startsWith('data:audio/')){
+          clean[p][k]=v;
+        }
+      }
+    }
+  }
+  return clean;
+}
+
 function loadCustomVoices(){
   customVoicesByPlayer={0:{},1:{},2:{},3:{}};
   try{
     const raw=localStorage.getItem(STORAGE_KEY);
     if(raw){
-      const parsed=JSON.parse(raw);
-      if(parsed && typeof parsed==='object'){
-        for(let p=0;p<4;p++){
-          if(parsed[p] && typeof parsed[p]==='object'){
-            customVoicesByPlayer[p]={...parsed[p]};
-          }
-        }
-      }
+      customVoicesByPlayer=sanitizeVoiceMap(JSON.parse(raw));
     }
   }catch(e){}
 }
@@ -225,6 +249,49 @@ function saveCustomVoices(){
     localStorage.setItem(STORAGE_KEY, JSON.stringify(customVoicesByPlayer));
   }catch(e){
     $('recStatus').textContent='Espaço local cheio para salvar áudio.';
+  }
+}
+
+function buildBackupPayload(){
+  return JSON.stringify({
+    app:'truco-mineiro-vozes',
+    version:1,
+    exportedAt:new Date().toISOString(),
+    voices:customVoicesByPlayer
+  }, null, 2);
+}
+
+function downloadVoiceBackup(){
+  const jsonStr=buildBackupPayload();
+  const blob=new Blob([jsonStr], {type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='truco-mineiro-vozes-backup.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  $('backupJsonArea').value=jsonStr;
+  $('recStatus').textContent='Backup (.json) baixado com sucesso.';
+}
+
+function restoreVoicesFromJsonText(jsonStr){
+  if(!jsonStr || !jsonStr.trim()){
+    $('recStatus').textContent='Cole ou selecione um JSON de backup válido.';
+    return;
+  }
+  try{
+    const parsed=JSON.parse(jsonStr);
+    const imported=sanitizeVoiceMap(parsed);
+    let total=0;
+    for(let p=0;p<4;p++) total+=Object.keys(imported[p]).length;
+    customVoicesByPlayer=imported;
+    saveCustomVoices();
+    renderVoiceStudio();
+    $('recStatus').textContent=`Backup recuperado (${total} áudio${total===1?'':'s'} nos 4 jogadores).`;
+  }catch(e){
+    $('recStatus').textContent='JSON inválido. Não foi possível recuperar o backup.';
   }
 }
 
@@ -383,7 +450,6 @@ function playTone(freq, type, dur, gainVal, delay=0){
   }catch(e){}
 }
 
-/* Cada jogador (0, 1, 2, 3) tem um timbre distinto quando não há áudio gravado */
 function playPlayerSignal(playerIdx, shoutKey){
   if(!soundEnabled) return;
   const seatShift = [1.0, 1.18, 0.86, 1.32][playerIdx] || 1.0;
@@ -870,6 +936,7 @@ reraiseBtn.onclick=()=>reraise(0);
 b.appendChild(reraiseBtn);
 }}
 
+/* ============ SEQUÊNCIA DE JOGADAS (0 -> 1 -> 2 -> 3) ============ */
 function play(index){
 if(G.turn!==0||G.handOver||G.resolvingTrick||G.pendingLevel!==null||G.pendingMao10||!G.players[0][index])return;
 ensureAudio();
@@ -878,7 +945,7 @@ const isEnc=G.encobertaMode&&G.trickNo>=1;
 const c=G.players[0].splice(index,1)[0];
 G.encobertaMode=false;
 put(0,c,isEnc);
-if(!G.handOver&&!G.resolvingTrick&&G.turn!==0&&G.pendingLevel===null)aiPlay();}
+if(!G.handOver&&!G.resolvingTrick&&G.turn!==0&&G.plays.length<4&&G.pendingLevel===null)aiPlay();}
 
 function put(p,c,encoberta){
   G.plays.push({p,c,encoberta:!!encoberta});
@@ -1147,13 +1214,14 @@ else acceptRaise(responderTeam);}
 function showHumanRaiseResponse(){render();}
 
 function aiPlay(){
-if(!G||G.handOver||G.resolvingTrick||G.turn===0)return;
+if(!G||G.handOver||G.resolvingTrick||G.turn===0||G.plays.length>=4)return;
 if(G.pendingLevel!==null||G.pendingMao10)return;
 const p=G.turn;
 clearAllTimers();
 aiTimer=setTimeout(()=>{
-if(!G||G.handOver||G.resolvingTrick||G.turn!==p||G.pendingLevel!==null||G.pendingMao10)return;
+if(!G||G.handOver||G.resolvingTrick||G.turn!==p||G.plays.length>=4||G.pendingLevel!==null||G.pendingMao10)return;
 const hand=G.players[p];
+if(!hand || hand.length===0)return;
 if(!G.justAccepted&&!G.maoDe10&&G.stakeLevel<3&&G.lastProposer!==p%2){
 if(evaluateAiRaise(hand,p%2)){proposeRaise(p);return;}
 }
@@ -1245,6 +1313,24 @@ $('clearAllRecordings').onclick=()=>{
   renderVoiceStudio();
   $('recStatus').textContent='Todas as gravações dos 4 jogadores foram apagadas.';
 };
+$('downloadBackupBtn').onclick=downloadVoiceBackup;
+$('triggerFileRestoreBtn').onclick=()=>$('backupFileInput').click();
+$('backupFileInput').addEventListener('change',e=>{
+  const file=e.target.files && e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    $('backupJsonArea').value=String(reader.result||'');
+    restoreVoicesFromJsonText($('backupJsonArea').value);
+    e.target.value='';
+  };
+  reader.readAsText(file);
+});
+$('exportTextBackupBtn').onclick=()=>{
+  $('backupJsonArea').value=buildBackupPayload();
+  $('recStatus').textContent='JSON gerado na caixa de texto.';
+};
+$('importTextBackupBtn').onclick=()=>restoreVoicesFromJsonText($('backupJsonArea').value);
 $('micCommandBtn').onclick=startVoiceCommand;
 $('showRules').onclick=()=>{$('rules').classList.remove('hide');$('setup').classList.add('hide')};
 $('hideRules').onclick=()=>{$('rules').classList.add('hide');$('setup').classList.remove('hide')};
