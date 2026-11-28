@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel:wght@800;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#f4d37b;--cream:#fff8eb;--green:#12613f;--deep:#082e20}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at center,#19764e,#062c1d);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}main{max-width:900px;margin:auto;padding:12px}.panel{background:#062e21c9;border:1px solid #ffffff26;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 7px 22px #00170e55}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}label{display:block;color:#d5e8dc;font-size:.9rem;margin-bottom:5px}select,button,textarea{font:600 .95rem system-ui;border:0;border-radius:10px;padding:11px 13px}select,textarea{width:100%;background:#fff;color:#123d2b}button{background:var(--gold);color:#38280a;cursor:pointer}button.secondary{background:#e8f1eb;color:#123d2b}button.red{background:#ad3038;color:white}button.confirm-danger{background:#ff2e3b;color:#fff;outline:2px solid var(--gold)}button:disabled{opacity:.45;cursor:not-allowed}.score{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.score>div{background:#ffffff12;border-radius:12px;padding:9px}.score strong{display:block;color:var(--gold);font-size:1.6rem}.subscore{font-size:.78rem;color:#cde0d4}
+:root{--gold:#f4d37b;--cream:#fff8eb;--green:#12613f;--deep:#082e20}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at center,#19764e,#062c1d);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}main{max-width:900px;margin:auto;padding:12px}.panel{background:#062e21c9;border:1px solid #ffffff26;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 7px 22px #00170e55}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}label{display:block;color:#d5e8dc;font-size:.9rem;margin-bottom:5px}select,button,textarea{font:600 .95rem system-ui;border:0;border-radius:10px;padding:11px 13px}select,textarea{width:100%;background:#fff;color:#123d2b}button{background:var(--gold);color:#38280a;cursor:pointer}button.secondary{background:#e8f1eb;color:#123d2b}button.red{background:#ad3038;color:white}button:disabled{opacity:.45;cursor:not-allowed}.score{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.score>div{background:#ffffff12;border-radius:12px;padding:9px}.score strong{display:block;color:var(--gold);font-size:1.6rem}.subscore{font-size:.78rem;color:#cde0d4}
 .table{position:relative;overflow:hidden;background:radial-gradient(ellipse,#218455,#0b4b31);border:7px solid #70482b;border-radius:22px;padding:12px;min-height:330px;box-shadow:inset 0 0 25px #001d12}
 .seats{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}.team-points{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0 3px}.team-point{background:#052e20ad;border:1px solid #ffffff26;border-radius:9px;padding:7px;text-align:center;display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:#d5e8dc}.team-point strong{font-size:1rem;color:var(--gold)}.beans{font-weight:900;letter-spacing:3px;font-size:1.05rem;color:var(--gold);overflow-wrap:anywhere;min-height:1.2em;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px}.seat{padding:7px;border-radius:9px;background:#052e20ad;font-size:.88rem}.seat.active{outline:2px solid var(--gold);color:var(--gold)}.center{min-height:125px;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.played{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;min-height:90px}
 .card{width:64px;height:92px;background:linear-gradient(180deg,#fffdf8 0%,#f7eedc 100%);color:#17231b;border-radius:9px;border:1px solid #cbbba0;box-shadow:0 4px 10px #00190f99;padding:4px 5px;display:flex;flex-direction:column;justify-content:space-between;font-weight:800;position:relative}
@@ -40,6 +40,13 @@
 @keyframes twinkleStar{from{opacity:.65;transform:translateX(-50%) scale(.94)}to{opacity:1;transform:translateX(-50%) scale(1.06)}}
 @keyframes starFloat{from{transform:translateY(0) rotate(-8deg) scale(.85);opacity:.7}to{transform:translateY(-5px) rotate(12deg) scale(1.15);opacity:1}}
 
+/* Box modal de confirmação para encerrar partida */
+.confirm-backdrop{position:fixed;inset:0;background:rgba(0,14,9,.78);display:flex;align-items:center;justify-content:center;padding:16px;z-index:100}
+.confirm-modal{width:100%;max-width:380px;background:radial-gradient(circle at top,#145338 0%,#06261a 100%);border:2px solid var(--gold);border-radius:16px;padding:18px;box-shadow:0 16px 40px rgba(0,0,0,.85);text-align:center}
+.confirm-modal h3{margin:0 0 8px;color:var(--gold);font-size:1.15rem}
+.confirm-modal p{margin:0 0 16px;color:#e5f2ea;font-size:.92rem}
+.confirm-modal .row{gap:10px}
+
 #log{max-height:110px;overflow:auto;color:#d5e8dc;font-size:.84rem}.tag{border-radius:20px;background:#ffffff19;padding:5px 9px;font-size:.8rem}.muted{color:#c8ddd0;font-size:.9rem}.namebox{margin:12px 0}.namebox input{width:100%;padding:12px;border:1px solid #ffffff55;border-radius:10px;font:inherit;background:#fff;color:#123d2b}.scoreboard{width:100%;border-collapse:collapse;margin-top:8px;font-size:.88rem}.scoreboard th,.scoreboard td{padding:8px 5px;text-align:center;border-bottom:1px solid #ffffff25}.scoreboard th{color:var(--gold);font-weight:700}.scoreboard td:first-child,.scoreboard th:first-child{text-align:left}.scoreboard-wrap{overflow-x:auto}.status{font-weight:700;color:#f4d37b}.hide{display:none!important}#progress{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:8px 0 4px}#handsHistory{line-height:1.7}#toggleRow{margin:8px 0 0;text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}#toggleRow button{padding:8px 14px;font-size:.85rem;min-width:auto;flex:0 0 auto}.brand{margin:0 0 6px;color:var(--gold);font-size:1.3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}.brand small{color:#c8ddd0;font-weight:400;font-size:.75rem}
 .kernel{display:inline-block;width:13px;height:15px;background:radial-gradient(circle at 32% 28%,#fff8c4 0%,#f7d968 35%,#e0a824 75%,#b07c12 100%);border-radius:50% 50% 42% 42%;box-shadow:inset -1px -2px 2px rgba(90,60,0,.45),inset 1px 1px 2px rgba(255,255,200,.7),0 1px 2px rgba(0,0,0,.45);margin:0 1px;flex-shrink:0}
 .voice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:10px}
@@ -57,10 +64,11 @@
 .seat-tabs button.active-seat{outline:2px solid var(--gold);background:var(--gold);color:#38280a}
 .backup-box{margin-top:12px;padding-top:12px;border-top:1px solid #ffffff22;display:flex;flex-direction:column;gap:8px}
 .backup-box textarea{min-height:76px;font-size:.78rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.malice-box{margin-top:10px;padding:10px 12px;border-radius:11px;background:#05261b;border:1px solid #ffffff22;font-size:.84rem;color:#d5e8dc;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 @media(max-width:520px){main{padding:7px}.table{padding:8px;border-width:5px}.card{width:56px;height:82px}.hand .card{width:64px;height:94px}.score strong{font-size:1.35rem}.kernel{width:11px;height:13px}#message{font-size:1.08rem;min-height:40px}.spectacle-layer{top:7%}.spectacle-text{font-size:1.05rem}.spectacle-box{padding:10px 15px}}
 </style></head><body>
-<main>
-<section id="setup" class="panel"><div class="brand"><h1 style="margin:0;font-size:1.3rem;color:var(--gold)">🃏 TRUCO MINEIRO</h1><small>Quatro jogadores • duas duplas</small></div><h2 style="margin:.4em 0">Nova partida</h2><div class="namebox"><label for="playerName">Seu nome (jogador)</label><input id="playerName" type="text" maxlength="30" placeholder="Digite seu nome" autocomplete="name"></div><div class="row"><div><label for="difficulty">Nível dos adversários</label><select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></div><div><label for="starting">Quem começa?</label><select id="starting"><option value="you">Você</option><option value="random">Aleatório</option></select></div><div><label for="pauseTime">Pausa entre jogadas (X)</label><select id="pauseTime"><option value="0.5">0,5 segundo (Rápido)</option><option value="1">1 segundo</option><option value="1.5" selected>1,5 segundos</option><option value="2">2 segundos</option><option value="3">3 segundos (Calmo)</option><option value="4">4 segundos</option></select></div></div><p class="muted">Você e seu parceiro virtual contra dois adversários. Cada jogo vai até 12 pontos; a partida é melhor de três jogos.</p><div class="row"><button id="start">Começar partida</button><button class="secondary" id="toggleVoiceStudioSetup">🎙️ Gravar vozes (4)</button><button class="secondary" id="showRules">Regras</button></div></section>
+<main id="appRoot">
+<section id="setup" class="panel"><div class="brand"><h1 style="margin:0;font-size:1.3rem;color:var(--gold)">🃏 TRUCO MINEIRO</h1><small>Quatro jogadores • duas duplas</small></div><h2 style="margin:.4em 0">Nova partida</h2><div class="namebox"><label for="playerName">Seu nome (jogador)</label><input id="playerName" type="text" maxlength="30" placeholder="Digite seu nome" autocomplete="name"></div><div class="row"><div><label for="difficulty">Nível dos adversários</label><select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></div><div><label for="starting">Quem começa?</label><select id="starting"><option value="you">Você</option><option value="random">Aleatório</option></select></div><div><label for="pauseTime">Pausa entre jogadas (X)</label><select id="pauseTime"><option value="0.5">0,5 segundo (Rápido)</option><option value="1">1 segundo</option><option value="1.5" selected>1,5 segundos</option><option value="2">2 segundos</option><option value="3">3 segundos (Calmo)</option><option value="4">4 segundos</option></select></div></div><p class="muted">Você e seu parceiro virtual contra dois adversários. Cada jogo vai até 12 pontos; a partida é melhor de três jogos.</p><div class="malice-box"><span id="partnerMaliceSummary">🧠 Parceiro: carregando malandragens...</span><button type="button" class="secondary" id="resetPartnerMalice" style="padding:6px 10px;font-size:.78rem">Zerar aprendizado</button></div><div class="row" style="margin-top:10px"><button id="start">Começar partida</button><button class="secondary" id="toggleVoiceStudioSetup">🎙️ Gravar vozes (4)</button><button class="secondary" id="showRules">Regras</button></div></section>
 
 <section id="voiceStudio" class="panel hide">
 <div class="brand"><h2 style="margin:0;font-size:1.15rem;color:var(--gold)">🎙️ Sequência de Voz por Jogador</h2><button class="secondary" id="closeVoiceStudio" style="padding:7px 12px;font-size:.82rem">Voltar</button></div>
@@ -85,13 +93,13 @@
 </div>
 </section>
 
-<section id="rules" class="panel hide"><h2>Regras configuradas</h2><ul><li>Mão normal: 2 pontos.</li><li>Truco aceito: 4 pontos.</li><li>Pedido de 6 aceito: 8 pontos.</li><li>Pedido de 9 aceito: 12 pontos.</li><li><strong>Mão de 10:</strong> ao chegar a 10 pontos, a dupla <em>decide</em>:<ul><li><strong>Jogar mão de 10</strong> (4 pts, sem truco): ganha quem vencer — se a dupla em 10 perder, adversário +4.</li><li><strong>Correr</strong> (não jogar): adversário +2 imediato e nova mão é distribuída. Se a dupla continua em 10, nova oferta (loop até alguém chegar a 12).</li><li><strong>Se ambas as duplas estiverem em 10, é obrigatório jogar</strong> (não é permitido correr).</li></ul></li><li><strong>Pedidos alternados:</strong> só a dupla adversária pode aumentar (6 ou 9). O parceiro (IA) também pode pedir.</li><li><strong>Carta encoberta:</strong> a partir da 2ª vaza, qualquer jogador pode jogar uma carta virada para baixo. Ela não tem valor na vaza.</li><li><strong>Correr com parceiro:</strong> ao correr, o parceiro decide se corre também. Se ele não correr, o jogo continua.</li><li><strong>Empates nas vazas:</strong> na 1ª vaza empatada, quem tiver a carta maior na 2ª vaza leva; na 2ª vaza empatada, vence quem ganhou a 1ª; na 3ª vaza empatada, os adversários retomam a rodada.</li><li>Cada mão é decidida em até três vazas; quem vencer duas leva a mão.</li><li>Cada jogo termina ao atingir 12 pontos. Vence a queda quem ganhar 2 jogos.</li><li>Manilhas fixas: 4♣ (Zap), 7♥, A♠ e 7♦.</li></ul><p class="muted">Cartas comuns: 3, 2, A, K, J, Q, 7, 6, 5, 4.</p><button id="hideRules" class="secondary">Voltar</button></section>
+<section id="rules" class="panel hide"><h2>Regras configuradas</h2><ul><li>Mão normal: 2 pontos.</li><li>Truco aceito: 4 pontos.</li><li>Pedido de 6 aceito: 8 pontos.</li><li>Pedido de 9 aceito: 12 pontos.</li><li><strong>Mão de 10:</strong> ao chegar a 10 pontos, a dupla <em>decide</em>:<ul><li><strong>Jogar mão de 10</strong> (4 pts, sem truco): ganha quem vencer — se a dupla em 10 perder, adversário +4.</li><li><strong>Correr</strong> (não jogar): adversário +2 imediato e nova mão é distribuída. Se a dupla continua em 10, nova oferta (loop até alguém chegar a 12).</li><li><strong>Se ambas as duplas estiverem em 10, é obrigatório jogar</strong> (não é permitido correr).</li></ul></li><li><strong>Pedidos alternados:</strong> só a dupla adversária pode aumentar (6 ou 9). O parceiro (IA) também pode pedir.</li><li><strong>Carta encoberta:</strong> a partir da 2ª vaza, qualquer jogador pode jogar uma carta virada para baixo. Ela não tem valor na vaza.</li><li><strong>Correr com parceiro:</strong> quando o adversário truca e o parceiro quer fugir, você decide se corre ou segura.</li><li><strong>Empates nas vazas:</strong> na 1ª vaza empatada, quem tiver a carta maior na 2ª vaza leva; na 2ª vaza empatada, vence quem ganhou a 1ª; na 3ª vaza empatada, os adversários retomam a rodada.</li><li>Cada mão é decidida em até três vazas; quem vencer duas leva a mão.</li><li>Cada jogo termina ao atingir 12 pontos. Vence a queda quem ganhar 2 jogos.</li><li>Manilhas fixas: 4♣ (Zap), 7♥, A♠ e 7♦.</li></ul><p class="muted">Cartas comuns: 3, 2, A, K, J, Q, 7, 6, 5, 4.</p><button id="hideRules" class="secondary">Voltar</button></section>
 
 <section id="game" class="hide">
 <div id="toggleRow"><button id="toggleInfo" class="secondary">📊 Mostrar placares</button><button id="toggleAudio" class="secondary">🔊 Sons: Ligados</button><button id="openVoiceInGame" class="secondary">🎙️ Vozes (4)</button><button id="micCommandBtn" class="secondary">🎤 Falar comando</button></div>
 <div id="infoPanels" class="hide">
 <div class="panel score"><div><span class="subscore">VOCÊ + PARCEIRO</span><strong id="games0">0</strong><span class="subscore">jogos vencidos na queda</span></div><div><span class="subscore">ADVERSÁRIOS</span><strong id="games1">0</strong><span class="subscore">jogos vencidos na queda</span></div></div>
-<div class="panel" id="scoreboardPanel"><b>Placar dos jogos da queda</b><div class="scoreboard-wrap"><table class="scoreboard"><thead><tr><th>Jogo</th><th>Sua dupla</th><th>Adversários</th><th>Situação</th></tr></thead><tbody id="scoreRows"></tbody></table></div><p class="muted" id="fallStatus">Queda: 0 × 0 jogos</p><p class="muted" id="handsHistory">Mãos deste jogo: —</p></div>
+<div class="panel" id="scoreboardPanel"><b>Placar dos jogos da queda</b><div class="scoreboard-wrap"><table class="scoreboard"><thead><tr><th>Jogo</th><th>Sua dupla</th><th>Adversários</th><th>Situação</th></tr></thead><tbody id="scoreRows"></tbody></table></div><p class="muted" id="fallStatus">Queda: 0 × 0 jogos</p><p class="muted" id="handsHistory">Mãos deste jogo: —</p><p class="muted" id="partnerTelemetry">Malícia do parceiro: —</p></div>
 <div class="row"><span class="tag" id="gameNo">Jogo 1 de 3</span><span class="tag" id="handNo">Mão 1</span><span class="tag" id="stake">Valendo 2 pontos</span></div>
 </div>
 <div class="table">
@@ -100,8 +108,21 @@
 <div class="panel"><b>Sua mão</b><div class="hand" id="hand"></div><div class="actions" id="cardActions"></div></div>
 <div class="panel hide" id="betPanel"><div class="actions" id="betActions"></div></div>
 <div class="panel hide" id="logPanel"><div id="log"></div></div>
-<div class="row" id="footerActions"><button id="nextHand">Próxima mão</button><button class="red" id="endGame">Encerrar partida</button><button class="secondary hide" id="cancelEndGame">Cancelar</button></div>
-</section></main>
+<div class="row" id="footerActions"><button id="nextHand">Próxima mão</button><button class="red" id="endGame">Encerrar partida</button></div>
+</section>
+</main>
+
+<div id="endConfirmBackdrop" class="confirm-backdrop hide" role="dialog" aria-modal="true" aria-labelledby="endConfirmTitle">
+  <div class="confirm-modal">
+    <h3 id="endConfirmTitle">Encerrar partida?</h3>
+    <p>Deseja realmente sair da partida atual?</p>
+    <div class="row">
+      <button type="button" class="red" id="confirmEndYes">Sim</button>
+      <button type="button" class="secondary" id="confirmEndNo">Cancela</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (()=>{
 'use strict';
@@ -121,28 +142,144 @@ const VOICE_SLOTS=[
   {id:'aceito', label:'Aceito / Desce'}
 ];
 const STORAGE_KEY='trucoMineiroPerPlayerVoicesV1';
+const PARTNER_MEMORY_KEY='trucoMineiroPartnerMaliciaV1';
 
 let G=null, aiTimer=null, spectacleTimer=null, audioCtx=null, soundEnabled=true;
 let customVoicesByPlayer={0:{},1:{},2:{},3:{}}, selectedStudioPlayer=0;
 let mediaRecorder=null, recChunks=[], activeRecSlot=null, previewAudio=null;
 let recognition=null, isListening=false, previousSectionId='setup';
-let awaitingEndConfirm=false;
+let endModalOpen=false, disabledForModal=[];
 
-function resetEndGameConfirm(){
-  awaitingEndConfirm=false;
-  const endBtn=$('endGame');
-  const cancelBtn=$('cancelEndGame');
-  if(endBtn){
-    endBtn.textContent='Encerrar partida';
-    endBtn.className='red';
-  }
-  if(cancelBtn){
-    cancelBtn.classList.add('hide');
+/* ============ MEMÓRIA DE MALANDRAGENS DO PARCEIRO ============ */
+function defaultPartnerMemory(){
+  return {
+    handsObserved: 0,
+    oppRaises: 0,
+    oppBluffWins: 0,      // adversário aumentou e perdeu a mão (indício de blefe/forçação)
+    oppRunWins: 0,       // adversário aumentou e dupla fugiu
+    partnerRaiseWins: 0, // nossa dupla aumentou e venceu
+    partnerRaiseLosses: 0,// nossa dupla aumentou e perdeu
+    encobertaWins: 0,    // vazas vencidas com carta encoberta na mesa
+    encobertaPlays: 0,
+    bluffSuspicion: 0.15, // 0.0 a 0.75: desconfiança de blefe do adversário
+    aggressionBias: 0.0   // -0.20 a +0.25: ajuste de malícia em pedidos/segurar
+  };
+}
+
+let partnerMemory = loadPartnerMemory();
+
+function loadPartnerMemory(){
+  try{
+    const raw = localStorage.getItem(PARTNER_MEMORY_KEY);
+    if(!raw) return defaultPartnerMemory();
+    return {...defaultPartnerMemory(), ...JSON.parse(raw)};
+  }catch(e){
+    return defaultPartnerMemory();
   }
 }
 
+function savePartnerMemory(){
+  try{
+    localStorage.setItem(PARTNER_MEMORY_KEY, JSON.stringify(partnerMemory));
+  }catch(e){}
+  updatePartnerMaliceUI();
+}
+
+function getMaliceLevelLabel(){
+  const score = (partnerMemory.handsObserved * 1.2) + (partnerMemory.oppBluffWins * 12) + (partnerMemory.partnerRaiseWins * 6);
+  if(score >= 120) return 'Mestre da Várzea';
+  if(score >= 60) return 'Raposa Velha';
+  if(score >= 20) return 'Pegando o Jeito';
+  return 'Novato';
+}
+
+function updatePartnerMaliceUI(){
+  const el = $('partnerMaliceSummary');
+  if(el){
+    const bluffPct = Math.round(partnerMemory.bluffSuspicion * 100);
+    el.textContent = `🧠 Parceiro: ${getMaliceLevelLabel()} • ${partnerMemory.handsObserved} mãos • Leitura de blefe: ${bluffPct}%`;
+  }
+  const tel = $('partnerTelemetry');
+  if(tel){
+    const bluffPct = Math.round(partnerMemory.bluffSuspicion * 100);
+    const aggPct = Math.round(partnerMemory.aggressionBias * 100);
+    tel.textContent = `Malícia do parceiro (${getMaliceLevelLabel()}): ${partnerMemory.handsObserved} mãos aprendidas | Leitura de blefe ${bluffPct}% | Ajuste de malícia ${aggPct >= 0 ? '+' : ''}${aggPct}%`;
+  }
+}
+
+function learnFromHandOutcome(winnerTeam, reason, handCtx){
+  if(!handCtx) return;
+  partnerMemory.handsObserved += 1;
+  const lr = 0.08;
+
+  if(handCtx.hadOppRaise){
+    partnerMemory.oppRaises += 1;
+    if(winnerTeam === 0){
+      // Adversário pediu truco/aumento e perdeu a mão: aumenta suspeita de blefe/forçação
+      partnerMemory.oppBluffWins += 1;
+      partnerMemory.bluffSuspicion = Math.min(0.75, +(partnerMemory.bluffSuspicion + lr).toFixed(3));
+      partnerMemory.aggressionBias = Math.min(0.25, +(partnerMemory.aggressionBias + 0.025).toFixed(3));
+    } else if(reason === 'run_by_team0'){
+      partnerMemory.oppRunWins += 1;
+      partnerMemory.bluffSuspicion = Math.max(0.05, +(partnerMemory.bluffSuspicion - 0.02).toFixed(3));
+    }
+  }
+
+  if(handCtx.hadTeam0Raise){
+    if(winnerTeam === 0){
+      partnerMemory.partnerRaiseWins += 1;
+      partnerMemory.aggressionBias = Math.min(0.25, +(partnerMemory.aggressionBias + 0.03).toFixed(3));
+    } else if(winnerTeam === 1){
+      partnerMemory.partnerRaiseLosses += 1;
+      partnerMemory.aggressionBias = Math.max(-0.20, +(partnerMemory.aggressionBias - 0.025).toFixed(3));
+    }
+  }
+
+  if(handCtx.team0EncobertaCount > 0){
+    partnerMemory.encobertaPlays += handCtx.team0EncobertaCount;
+    if(winnerTeam === 0){
+      partnerMemory.encobertaWins += 1;
+      partnerMemory.aggressionBias = Math.min(0.25, +(partnerMemory.aggressionBias + 0.015).toFixed(3));
+    }
+  }
+
+  savePartnerMemory();
+}
+
+function openEndConfirmModal(){
+  if(endModalOpen) return;
+  endModalOpen=true;
+  disabledForModal=[];
+  document.querySelectorAll('#appRoot button, #appRoot select, #appRoot input, #appRoot textarea').forEach(el=>{
+    if(!el.disabled){
+      el.disabled=true;
+      disabledForModal.push(el);
+    }
+  });
+  $('endConfirmBackdrop').classList.remove('hide');
+  $('confirmEndNo').focus();
+}
+
+function closeEndConfirmModal(){
+  if(!endModalOpen) return;
+  endModalOpen=false;
+  $('endConfirmBackdrop').classList.add('hide');
+  disabledForModal.forEach(el=>{
+    el.disabled=false;
+  });
+  disabledForModal=[];
+  if(G) render();
+}
+
 function executeEndGame(){
-  resetEndGameConfirm();
+  if(endModalOpen){
+    endModalOpen=false;
+    $('endConfirmBackdrop').classList.add('hide');
+    disabledForModal.forEach(el=>{
+      el.disabled=false;
+    });
+    disabledForModal=[];
+  }
   clearAllTimers();
   clearTimeout(spectacleTimer);
   if(recognition && isListening){try{recognition.stop();}catch(e){}}
@@ -535,8 +672,8 @@ function triggerShoutAudio(shoutKey, playerIdx=0){
 
 /* ============ COMANDOS POR VOZ (MICROFONE) ============ */
 function startVoiceCommand(){
-  resetEndGameConfirm();
-  if(!G || G.matchOver){
+  if(endModalOpen || !G || G.matchOver){
+    if(endModalOpen) return;
     setStatusMsg('Inicie uma partida para usar comandos de voz.', false);
     return;
   }
@@ -587,12 +724,16 @@ function updateMicButton(){
 }
 
 function handleSpokenCommand(raw){
-  if(!G || !raw) return;
+  if(!G || !raw || endModalOpen) return;
   const txt=raw.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
   if(/\b(to fora|fora|corri|correr|vou nao|nao vou|desisto|passo)\b/.test(txt)){
     if(G.pendingMao10 && !G.mao10AiAlsoAt10){
       resolveMao10(false);
+      return;
+    }
+    if(G.pendingPartnerEscapeConfirm){
+      confirmPartnerEscapeDecision(true);
       return;
     }
     if(G.pendingLevel!==null && G.pendingRaiser===1 && !G.pendingRunDecision){
@@ -601,9 +742,13 @@ function handleSpokenCommand(raw){
     }
   }
 
-  if(/\b(aceito|aceita|desce|quero|manda|encaro|jogar|jogo)\b/.test(txt)){
+  if(/\b(aceito|aceita|desce|quero|manda|encaro|jogar|jogo|segura|fica)\b/.test(txt)){
     if(G.pendingMao10){
       resolveMao10(true);
+      return;
+    }
+    if(G.pendingPartnerEscapeConfirm){
+      confirmPartnerEscapeDecision(false);
       return;
     }
     if(G.pendingLevel!==null && G.pendingRaiser===1 && !G.pendingRunDecision){
@@ -709,13 +854,21 @@ function say(t, announce=true, hype=false, sfx=null){
   if(announce) setStatusMsg(t, hype);
 }
 
+function createHandTelemetry(){
+  return {
+    hadOppRaise: false,
+    hadTeam0Raise: false,
+    team0EncobertaCount: 0,
+    settled: false
+  };
+}
+
 function start(){
-  resetEndGameConfirm();
   clearAllTimers();
   ensureAudio();
   savePlayerName();
   savePausePref();
-  G={difficulty:$('difficulty').value,score:[0,0],games:[0,0],gameHistory:[null,null,null],game:1,hand:0,dealer:$('starting').value==='you'?3:Math.floor(Math.random()*4),trickNo:0,trickWins:[],trickHighStrength:[],plays:[],players:[[],[],[],[]],stake:2,stakeLevel:0,pendingLevel:null,pendingRaiser:null,pendingPlayer:null,lastProposer:null,justAccepted:false,handOver:false,handWinner:null,handsLog:[],matchOver:false,turn:0,leadPlayer:0,logs:[],maoDe10:false,encobertaMode:false,pendingRunDecision:false,pendingMao10:false,mao10AiAlsoAt10:false,resolvingTrick:false,statusMsg:'Preparando...'};
+  G={difficulty:$('difficulty').value,score:[0,0],games:[0,0],gameHistory:[null,null,null],game:1,hand:0,dealer:$('starting').value==='you'?3:Math.floor(Math.random()*4),trickNo:0,trickWins:[],trickHighStrength:[],plays:[],players:[[],[],[],[]],stake:2,stakeLevel:0,pendingLevel:null,pendingRaiser:null,pendingPlayer:null,lastProposer:null,justAccepted:false,handOver:false,handWinner:null,handsLog:[],matchOver:false,turn:0,leadPlayer:0,handStarter:0,logs:[],maoDe10:false,encobertaMode:false,pendingRunDecision:false,pendingPartnerEscapeConfirm:false,pendingMao10:false,mao10AiAlsoAt10:false,resolvingTrick:false,handTelemetry:createHandTelemetry(),statusMsg:'Preparando...'};
   $('setup').classList.add('hide');
   $('rules').classList.add('hide');
   $('voiceStudio').classList.add('hide');
@@ -726,7 +879,6 @@ function start(){
 /* ============ DEAL (com oferta de mão de 10) ============ */
 function deal(){
   if(G.matchOver) return;
-  resetEndGameConfirm();
   clearAllTimers();
   G.hand++;
   if(!G.handsLog || (G.handsLog.length>0 && G.handsLog[0].game!==G.game)) G.handsLog=[];
@@ -734,10 +886,13 @@ function deal(){
   G.stakeLevel=0;
   G.pendingLevel=null; G.pendingRaiser=null; G.pendingPlayer=null; G.lastProposer=null; G.justAccepted=false;
   G.handOver=false; G.handWinner=null; G.encobertaMode=false; G.pendingRunDecision=false;
+  G.pendingPartnerEscapeConfirm=false;
   G.pendingMao10=false; G.maoDe10=false; G.mao10AiAlsoAt10=false; G.resolvingTrick=false;
+  G.handTelemetry=createHandTelemetry();
   const d=makeDeck();
   for(let i=0;i<3;i++) for(let p=0;p<4;p++) G.players[p].push(d.pop());
-  G.turn=-1; G.leadPlayer=0;
+  G.handStarter=(G.dealer+1)%4;
+  G.turn=-1; G.leadPlayer=G.handStarter;
   handleMao10Offer();
 }
 
@@ -817,14 +972,15 @@ function resolveMao10(humanYes){
 
 function startNormalHand(){
   if(!G || G.matchOver) return;
-  G.turn=(G.dealer+1)%4;
-  G.leadPlayer=G.turn;
+  G.handStarter=(G.dealer+1)%4;
+  G.leadPlayer=G.handStarter;
+  G.turn=G.handStarter;
   const starterName = getSeatDisplayName(G.turn);
   if(G.maoDe10){
-    say(`Mão de 10 (4 pts). Inicia: ${starterName}.`, true, true, 'alert');
+    say(`Mão de 10 (4 pts). Mão: ${starterName}.`, true, true, 'alert');
   } else {
     G.stake=2;
-    say(`Nova mão (2 pts). Inicia: ${starterName}.`, true, false, 'card');
+    say(`Nova mão (2 pts). Mão: ${starterName}.`, true, false, 'card');
   }
   render();
   if(G.turn!==0) aiPlay();
@@ -855,6 +1011,7 @@ $('beans0').innerHTML=beansHTML(Math.floor(G.score[0]/2));
 $('beans1').innerHTML=beansHTML(Math.floor(G.score[1]/2));
 renderScoreboard();
 renderHandsHistory();
+updatePartnerMaliceUI();
 $('gameNo').textContent=`Jogo ${G.game} de 3`;
 $('handNo').textContent=`Mão ${G.hand}`;
 $('stake').textContent=G.maoDe10?'🃏 Mão de 10 · 4 pts':`Valendo ${G.stake} ponto${G.stake===1?'':'s'}`;
@@ -916,7 +1073,13 @@ if(G.pendingMao10){
 }
 if(G.handOver||G.matchOver||G.resolvingTrick){$('betPanel').classList.add('hide');return;}
 if(G.pendingLevel!==null){
-if(G.pendingRaiser===1&&!G.pendingRunDecision){buildHumanRaiseButtons(b);}
+if(G.pendingRaiser===1&&!G.pendingRunDecision){
+  if(G.pendingPartnerEscapeConfirm){
+    buildPartnerEscapeConfirmButtons(b);
+  } else {
+    buildHumanRaiseButtons(b);
+  }
+}
 $('betPanel').classList.toggle('hide',!b.hasChildNodes());return;
 }
 if(G.turn===0){
@@ -946,6 +1109,31 @@ b.appendChild(encBtn);
 }
 $('betPanel').classList.toggle('hide',!b.hasChildNodes());}
 
+function buildPartnerEscapeConfirmButtons(b){
+const pending=G.pendingLevel;
+const newStake=valueOf(pending);
+const confirmRun=document.createElement('button');
+confirmRun.textContent='🏃 Correr mesmo';
+confirmRun.className='red';
+confirmRun.onclick=()=>confirmPartnerEscapeDecision(true);
+
+const holdBtn=document.createElement('button');
+holdBtn.textContent=`🛡️ Segurar / Aceitar (${newStake} pts)`;
+holdBtn.onclick=()=>confirmPartnerEscapeDecision(false);
+
+b.append(confirmRun, holdBtn);
+if(pending<3){
+  const reraiseBtn=document.createElement('button');
+  reraiseBtn.textContent=`Pedir ${CALLS[pending]} (${valueOf(pending+1)} pts)`;
+  reraiseBtn.className='secondary';
+  reraiseBtn.onclick=()=>{
+    G.pendingPartnerEscapeConfirm=false;
+    reraise(0);
+  };
+  b.appendChild(reraiseBtn);
+}
+}
+
 function buildHumanRaiseButtons(b){
 const pending=G.pendingLevel;
 const newStake=valueOf(pending);
@@ -964,19 +1152,20 @@ reraiseBtn.onclick=()=>reraise(0);
 b.appendChild(reraiseBtn);
 }}
 
-/* ============ SEQUÊNCIA DE JOGADAS (0 -> 1 -> 2 -> 3) ============ */
+/* ============ SEQUÊNCIA DE JOGADAS (DIREITA / SENTIDO ANTI-HORÁRIO: 0 -> 1 -> 2 -> 3) ============ */
 function play(index){
-if(G.turn!==0||G.handOver||G.resolvingTrick||G.pendingLevel!==null||G.pendingMao10||!G.players[0][index])return;
-resetEndGameConfirm();
+if(endModalOpen||G.turn!==0||G.handOver||G.resolvingTrick||G.pendingLevel!==null||G.pendingMao10||!G.players[0][index])return;
 ensureAudio();
 G.justAccepted=false;
 const isEnc=G.encobertaMode&&G.trickNo>=1;
+if(isEnc && G.handTelemetry) G.handTelemetry.team0EncobertaCount += 1;
 const c=G.players[0].splice(index,1)[0];
 G.encobertaMode=false;
 put(0,c,isEnc);
 if(!G.handOver&&!G.resolvingTrick&&G.turn!==0&&G.plays.length<4&&G.pendingLevel===null)aiPlay();}
 
 function put(p,c,encoberta){
+  if(p===2 && encobrta && G.handTelemetry) G.handTelemetry.team0EncobertaCount += 1;
   G.plays.push({p,c,encoberta:!!encoberta});
   const callout = cardCallout(p, c, !!encoberta);
   const isManilha = !encoberta && strength(c)>=100;
@@ -1011,16 +1200,19 @@ if(winner!==-1){
   G.leadPlayer=wp.p;
   trickTopCard=wp;
 } else {
+  G.leadPlayer=G.handStarter;
   trickTopCard=top[0];
 }
+} else {
+  G.leadPlayer=G.handStarter;
 }
 G.trickWins.push(winner);
 G.trickHighStrength.push(trickTopCard ? {p:trickTopCard.p, team:trickTopCard.p%2, val:strength(trickTopCard.c)} : null);
 
 const vazaNum = G.trickNo+1;
 const vazaMsg = winner<0
-  ? `${vazaNum}ª vaza empatada.`
-  : `${vazaNum}ª vaza: ${TEAM_NAMES[winner]}.`;
+  ? `${vazaNum}ª vaza empatada (mão: ${getSeatDisplayName(G.handStarter)}).`
+  : `${vazaNum}ª vaza: ${TEAM_NAMES[winner]} (sai ${getSeatDisplayName(G.leadPlayer)}).`;
 say(vazaMsg, true, winner===0, winner===0?'win':'alert');
 G.plays=[];G.trickNo++;
 
@@ -1042,14 +1234,14 @@ if(G.trickNo===3 && handWinner===null){
   if(t3!==-1){
     handWinner=t3;
   } else {
-    handWinner=1;
+    handWinner=G.handStarter%2;
   }
 }
 
 if(handWinner!==null){
   render();
   clearAllTimers();
-  aiTimer=setTimeout(()=>finishHand(handWinner), getPauseMs());
+  aiTimer=setTimeout(()=>finishHand(handWinner, 'tricks'), getPauseMs());
   return;
 }
 G.turn=G.leadPlayer;
@@ -1066,10 +1258,14 @@ aiTimer=setTimeout(()=>{
 }, getPauseMs());
 }
 
-function finishHand(w){
+function finishHand(w, reason='tricks'){
 if(!G) return;
 G.score[w]+=G.stake;G.handOver=true;G.handWinner=w;
 G.handsLog.push({game:G.game,hand:G.hand,winner:w,stake:G.stake});
+if(G.handTelemetry && !G.handTelemetry.settled){
+  G.handTelemetry.settled=true;
+  learnFromHandOutcome(w, reason, G.handTelemetry);
+}
 const msg = `${TEAM_NAMES[w]} ${teamVerb(w)} a mão (+${G.stake} pts).`;
 say(msg, true, true, w===0?'win':'alert');
 checkGame(w);
@@ -1077,7 +1273,7 @@ G.dealer=(G.dealer+1)%4;
 render();
 }
 
-/* ============ PEDIDOS ============ */
+/* ============ PEDIDOS + MALANDRAGENS DO PARCEIRO ============ */
 function shoutPhraseForLevel(level){
   if(level===1){
     const p = pickRandom(['Truco, ladrão!', 'Toma truco!']);
@@ -1092,8 +1288,7 @@ function shoutPhraseForLevel(level){
 }
 
 function humanProposeRaise(){
-if(G.turn!==0||G.handOver||G.resolvingTrick||G.pendingLevel!==null||G.maoDe10||G.stakeLevel>=3||G.justAccepted||G.lastProposer===0)return;
-resetEndGameConfirm();
+if(endModalOpen||G.turn!==0||G.handOver||G.resolvingTrick||G.pendingLevel!==null||G.maoDe10||G.stakeLevel>=3||G.justAccepted||G.lastProposer===0)return;
 ensureAudio();
 G.encobertaMode=false;
 proposeRaise(0);}
@@ -1104,6 +1299,10 @@ if(G.lastProposer===player%2)return false;
 G.pendingLevel=G.stakeLevel+1;
 G.pendingRaiser=player%2;
 G.pendingPlayer=player;
+if(G.handTelemetry){
+  if(player%2===1) G.handTelemetry.hadOppRaise=true;
+  else G.handTelemetry.hadTeam0Raise=true;
+}
 const shout=shoutPhraseForLevel(G.pendingLevel);
 triggerShoutAudio(shout.key, player);
 say(`${shout.display} (${getSeatDisplayName(player)})`, true, true, 'truco');
@@ -1122,24 +1321,29 @@ G.stakeLevel=G.pendingLevel;
 G.stake=valueOf(G.stakeLevel);
 const player=G.pendingPlayer;
 G.pendingLevel=null;G.pendingRaiser=null;G.pendingPlayer=null;
-G.justAccepted=true;G.pendingRunDecision=false;
+G.justAccepted=true;G.pendingRunDecision=false;G.pendingPartnerEscapeConfirm=false;
 triggerShoutAudio('aceito', responderPlayer);
 say(`${TEAM_NAMES[responderTeam]} aceitou (${G.stake} pts).`, true, false, 'win');
 G.turn=player;
 render();
 if(player!==0)aiPlay();}
 
-function runFromRaise(responderTeam){
+function runFromRaise(responderTeam, reason='run'){
 const responderPlayer = responderTeam===0 ? 0 : pickRandom([1,3]);
 const winner=G.pendingRaiser;
 const runValue=valueOf(G.pendingLevel-1);
 G.score[winner]+=runValue;
 G.handOver=true;
-G.pendingLevel=null;G.pendingRaiser=null;G.pendingPlayer=null;G.pendingRunDecision=false;
+G.pendingLevel=null;G.pendingRaiser=null;G.pendingPlayer=null;G.pendingRunDecision=false;G.pendingPartnerEscapeConfirm=false;
 const runShout = pickRandom(['Tô fora!', 'Vou não!']);
 const runKey = runShout.startsWith('Vou') ? 'vou_nao' : 'fora';
 triggerShoutAudio(runKey, responderPlayer);
 say(`${runShout.toUpperCase()} ${TEAM_NAMES[responderTeam]} correu (+${runValue} pts para ${TEAM_NAMES[winner]}).`, true, winner===0, 'run');
+if(G.handTelemetry && !G.handTelemetry.settled){
+  G.handTelemetry.settled=true;
+  const learnReason = responderTeam===0 ? 'run_by_team0' : reason;
+  learnFromHandOutcome(winner, learnReason, G.handTelemetry);
+}
 checkGame(winner);
 G.dealer=(G.dealer+1)%4;
 render();}
@@ -1150,6 +1354,10 @@ const raiserPlayer = team===0 ? 0 : pickRandom([1,3]);
 G.pendingLevel++;
 G.pendingRaiser=team;
 G.pendingPlayer=raiserPlayer;
+if(G.handTelemetry){
+  if(team===1) G.handTelemetry.hadOppRaise=true;
+  else G.handTelemetry.hadTeam0Raise=true;
+}
 const shout=shoutPhraseForLevel(G.pendingLevel);
 triggerShoutAudio(shout.key, raiserPlayer);
 say(`${shout.display} (${getSeatDisplayName(raiserPlayer)})`, true, true, 'truco');
@@ -1160,9 +1368,25 @@ if(team===0){
 }
 else{showHumanRaiseResponse();}}
 
+function confirmPartnerEscapeDecision(humanConfirmsRun){
+if(endModalOpen||!G||G.handOver||G.pendingLevel===null||!G.pendingPartnerEscapeConfirm)return;
+ensureAudio();
+G.pendingPartnerEscapeConfirm=false;
+if(humanConfirmsRun){
+  const runShout = pickRandom(['Tô fora!', 'Vou não!']);
+  const runKey = runShout.startsWith('Vou') ? 'vou_nao' : 'fora';
+  triggerShoutAudio(runKey, 2);
+  say(`${runShout.toUpperCase()} Você confirmou a fuga.`, true, false, 'run');
+  aiTimer=setTimeout(()=>runFromRaise(0, 'run_by_team0'), Math.max(500, Math.round(getPauseMs()*0.6)));
+} else {
+  triggerShoutAudio('aceito', 0);
+  say(`Você segurou o pedido (${valueOf(G.pendingLevel)} pts)!`, true, true, 'truco');
+  aiTimer=setTimeout(()=>acceptRaise(0), Math.max(500, Math.round(getPauseMs()*0.6)));
+}
+}
+
 function humanTryRun(responderTeam){
-if(!G||G.handOver||G.pendingLevel===null)return;
-resetEndGameConfirm();
+if(endModalOpen||!G||G.handOver||G.pendingLevel===null)return;
 ensureAudio();
 G.pendingRunDecision=true;
 say('Consultando o parceiro...', true, false, 'alert');
@@ -1173,11 +1397,13 @@ if(!G||G.handOver||G.pendingLevel===null){if(G)G.pendingRunDecision=false;return
 const partnerRuns=aiPartnerRunDecision();
 G.pendingRunDecision=false;
 if(partnerRuns){
+  // Parceiro quer fugir: pede confirmação do jogador antes de correr
+  G.pendingPartnerEscapeConfirm=true;
   const runShout = pickRandom(['Tô fora!', 'Vou não!']);
   const runKey = runShout.startsWith('Vou') ? 'vou_nao' : 'fora';
   triggerShoutAudio(runKey, 2);
-  say(`${runShout.toUpperCase()} Parceiro correu.`, true, false, 'run');
-  aiTimer=setTimeout(()=>runFromRaise(responderTeam), Math.max(600, Math.round(getPauseMs()*0.7)));
+  say(`Parceiro quer fugir ("${runShout}"). Confirma correr ou vai segurar?`, true, true, 'alert');
+  render();
 }
 else{
   triggerShoutAudio('aceito', 2);
@@ -1194,10 +1420,11 @@ const highCommons=hand.filter(c=>strength(c)>=8&&strength(c)<100).length;
 const bestStrength=Math.max(...hand.map(c=>strength(c)));
 if(manilhas>=2)return false;
 if(manilhas===1&&highCommons>=1)return false;
-if(manilhas===1&&bestStrength>=100)return Math.random()<0.2;
-if(highCommons>=2)return Math.random()<0.35;
-if(highCommons===1)return Math.random()<0.6;
-return Math.random()<0.85;}
+if(manilhas===1&&bestStrength>=100)return Math.random()<(0.2 - partnerMemory.bluffSuspicion*0.15);
+if(highCommons>=2)return Math.random()<(0.35 - partnerMemory.bluffSuspicion*0.2);
+if(highCommons===1)return Math.random()<(0.6 - partnerMemory.bluffSuspicion*0.25);
+// Se o parceiro aprendeu que os adversários blefam/forçam muito, ele arrisca menos fugir sozinho
+return Math.random()<(0.85 - partnerMemory.bluffSuspicion*0.35);}
 
 function evaluateAiRaise(hand,team){
 if(G.lastProposer===team)return false;
@@ -1216,8 +1443,9 @@ else if(manilhas===1&&highCommons>=1)bonus+=.3;
 else if(manilhas===1)bonus+=.15;
 else if(highCommons>=2)bonus+=.2;
 else if(highCommons===1)bonus+=.05;
+if(team===0) bonus += partnerMemory.aggressionBias;
 if(diff==='hard'&&manilhas===0&&highCommons===0&&G.stakeLevel===0)bonus+=.08;
-return Math.random()<Math.min(.85,base+bonus);}
+return Math.random()<Math.min(.88,Math.max(0.03,base+bonus));}
 
 function aiRespondToRaise(responderTeam){
 if(!G||G.handOver||G.pendingLevel===null||G.pendingRaiser===responderTeam)return;
@@ -1231,6 +1459,7 @@ if(manilhas>=2)rr={easy:.2,normal:.4,hard:.6}[diff];
 else if(manilhas===1&&highCommons>=1)rr={easy:.1,normal:.25,hard:.45}[diff];
 else if(manilhas===1)rr={easy:.05,normal:.12,hard:.25}[diff];
 else if(highCommons>=2)rr={easy:.03,normal:.10,hard:.2}[diff];
+if(responderTeam===0) rr = Math.min(0.75, Math.max(0.02, rr + partnerMemory.aggressionBias*0.5));
 if(Math.random()<rr){reraise(responderTeam);return;}
 }
 let runC;
@@ -1239,6 +1468,9 @@ else if(manilhas===1)runC={easy:.25,normal:.12,hard:.08}[diff];
 else if(highCommons>=2)runC={easy:.35,normal:.2,hard:.12}[diff];
 else if(highCommons===1)runC={easy:.5,normal:.35,hard:.25}[diff];
 else runC={easy:.7,normal:.55,hard:.4}[diff];
+if(responderTeam===0){
+  runC = Math.max(0.05, Math.min(0.85, runC - partnerMemory.bluffSuspicion*0.28 - partnerMemory.aggressionBias*0.2));
+}
 if(Math.random()<runC)runFromRaise(responderTeam);
 else acceptRaise(responderTeam);}
 
@@ -1263,7 +1495,8 @@ const partnerPlay=G.plays.find(x=>x.p===partnerPos&&!x.encoberta);
 if(partnerPlay){
 const faceUp=G.plays.filter(x=>!x.encoberta);
 const faceMax=faceUp.length?Math.max(...faceUp.map(x=>strength(x.c))):-1;
-if(strength(partnerPlay.c)===faceMax&&Math.random()<0.25){
+const encChance = p===2 ? Math.min(0.45, 0.25 + Math.max(0, partnerMemory.aggressionBias*0.4)) : 0.25;
+if(strength(partnerPlay.c)===faceMax&&Math.random()<encChance){
 const weakestIdx=hand.reduce((best,c,i)=>strength(c)<strength(hand[best])?i:best,0);
 const c=hand.splice(weakestIdx,1)[0];
 put(p,c,true);
@@ -1306,7 +1539,6 @@ function savePausePref(){try{localStorage.setItem('trucoMineiroPause',$('pauseTi
 function updateAudioButton(){$('toggleAudio').textContent = soundEnabled ? '🔊 Sons: Ligados' : '🔇 Sons: Desligados';}
 
 function openVoiceStudio(fromSec){
-  resetEndGameConfirm();
   previousSectionId=fromSec||'setup';
   ['setup','rules','game'].forEach(id=>$(id).classList.add('hide'));
   renderVoiceStudio();
@@ -1316,6 +1548,11 @@ function openVoiceStudio(fromSec){
 function renderScoreboard(){const rows=[];for(let i=0;i<3;i++){const h=G.gameHistory[i];let a='—',b='—',st='Aguardando';if(h){a=h.score[0];b=h.score[1];st=h.winner===0?'Vitória sua dupla':h.winner===1?'Vitória adversários':(i===G.game-1?'Em andamento':'Aguardando');}if(i===G.game-1&&!G.matchOver){a=G.score[0];b=G.score[1];st='Em andamento';}rows.push(`<tr><td>Jogo ${i+1}</td><td>${a}</td><td>${b}</td><td class="status">${st}</td></tr>`);}$('scoreRows').innerHTML=rows.join('');$('fallStatus').textContent=`Queda: sua dupla ${G.games[0]} × ${G.games[1]} adversários (vence quem ganhar 2 jogos)`;}
 
 loadCustomVoices();
+updatePartnerMaliceUI();
+$('resetPartnerMalice').onclick=()=>{
+  partnerMemory = defaultPartnerMemory();
+  savePartnerMemory();
+};
 $('playerName').addEventListener('change',savePlayerName);$('playerName').addEventListener('blur',savePlayerName);loadPlayerName();
 $('pauseTime').addEventListener('change',savePausePref);loadPausePref();
 $('toggleAudio').onclick=()=>{
@@ -1372,18 +1609,10 @@ $('endGame').onclick=()=>{
     executeEndGame();
     return;
   }
-  if(!awaitingEndConfirm){
-    awaitingEndConfirm=true;
-    $('endGame').textContent='⚠️ Confirmar encerrar';
-    $('endGame').className='red confirm-danger';
-    $('cancelEndGame').classList.remove('hide');
-    return;
-  }
-  executeEndGame();
+  openEndConfirmModal();
 };
-$('cancelEndGame').onclick=()=>{
-  resetEndGameConfirm();
-};
+$('confirmEndYes').onclick=executeEndGame;
+$('confirmEndNo').onclick=closeEndConfirmModal;
 $('toggleInfo').onclick=()=>{
 const isCurrentlyHidden=$('infoPanels').classList.contains('hide');
 $('infoPanels').classList.toggle('hide');
